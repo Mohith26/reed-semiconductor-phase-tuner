@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=1280">
+<title>RS17G22 Phase Tuner (concept) - workload-aware phase add/drop</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto+Flex:opsz,wght@8..144,300;8..144,400;8..144,500;8..144,600;8..144,700&display=swap">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="top">
+  <div class="wrap">
+    <a class="logo" href="#"><img src="assets/reed-logo.webp" alt="Reed Semiconductor"></a>
+    <div class="search"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2e7d32" stroke-width="2.2"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg><span>Enter your search</span></div>
+    <a class="btn-contact" href="#">Contact Us</a>
+  </div>
+</header>
+<nav class="nav"><ul>
+  <li>Products<svg width="12" height="8" viewBox="0 0 12 8"><path d="M1.5 1.5L6 6l4.5-4.5" fill="none" stroke="#fff" stroke-width="2"/></svg></li>
+  <li>Applications<svg width="12" height="8" viewBox="0 0 12 8"><path d="M1.5 1.5L6 6l4.5-4.5" fill="none" stroke="#fff" stroke-width="2"/></svg></li>
+  <li>Quality</li><li>Contact Us</li><li>About</li><li>Reed Newsroom</li>
+</ul></nav>
+
+<section class="hero"><div class="wrap">
+  <div class="status"><i></i>Active</div>
+  <h1>RS17G22 - PWMVID, AVS &amp; PMBus</h1>
+  <div class="row">
+    <img class="rohs" src="assets/rohs.png" alt="RoHS">
+    <a class="hbtn" href="#">Request Full Datasheet</a>
+    <a class="hbtn" href="#">Download Datasheet Brief</a>
+    <a class="hbtn" href="#">Purchase / Sample</a>
+    <a class="hbtn tool" href="#tuner">Phase Tuner</a>
+  </div>
+  <div class="brief"><svg width="14" height="18" viewBox="0 0 14 18"><path d="M1 1h8l4 4v12H1z" fill="#8bc34a"/><path d="M9 1v4h4" fill="#cfe8b0"/><text x="2.4" y="14.2" font-size="5.2" fill="#fff" font-weight="700">PDF</text></svg>RS17G22 Datasheet Brief</div>
+</div></section>
+
+<main>
+<section class="card" id="tuner">
+  <h2>Phase Tuner <span class="new">New</span><span class="sub">Workload-aware automatic phase add/drop for RS17G22 rails</span></h2>
+  <p class="lead">Replay a captured accelerator core-current trace against the rail, learn how big the next load step can be at each load level, and program a minimum active-phase floor per load level so that a step arriving while phases are shed stays inside the load-line window with probability at least 1 &minus; &alpha;. Datasheet thresholds still set phase count for efficiency above the floor.</p>
+
+  <div class="grid">
+    <div>
+      <div class="panel">
+        <h4>Rail under test</h4>
+        <table class="spec" id="spec"></table>
+        <div class="ctrl">
+          <label>Undershoot risk per load step (&alpha;)</label>
+          <div class="seg" id="alphaSeg"></div>
+        </div>
+        <div class="ctrl">
+          <label>Trace replay</label>
+          <select id="traceSel"></select>
+        </div>
+        <p class="note" id="dataNote"></p>
+      </div>
+    </div>
+    <div>
+      <div class="kpis" id="kpis"></div>
+      <div class="charts">
+        <div class="chart"><div class="hd"><h4>Phase floor by load</h4></div>
+          <p class="cap">Each dot is a calibration step: phases that must already be on at the pre-step load (datasheet add thresholds and undershoot reduction still active).</p>
+          <div class="legend"><span><i style="background:#9e9e9e"></i>Datasheet thresholds</span><span><i style="background:#00913a;height:4px"></i>Phase Tuner (floor + thresholds)</span><span><i class="dot" style="background:rgba(46,125,50,.35)"></i>Required phases, calibration step</span></div>
+          <svg id="chFloor" viewBox="0 0 520 290"></svg></div>
+        <div class="chart"><div class="hd"><h4>VR loss vs. out-of-spec steps</h4><span class="busy" id="frontBusy"></span></div>
+          <p class="cap">Held-out traces. Uniform per-phase thresholds (gray, A/phase) against Phase Tuner floors at each &alpha; (green).</p>
+          <div class="legend"><span><i style="background:#9e9e9e"></i>Uniform threshold sweep</span><span><i style="background:#00913a;height:4px"></i>Phase Tuner</span><span><i class="dot" style="background:#252525"></i>All on / datasheet</span></div>
+          <svg id="chFront" viewBox="0 0 520 290"></svg></div>
+        <div class="chart"><div class="hd"><h4 id="scopeTitle">Worst held-out step</h4></div>
+          <p class="cap" id="scopeCap"></p>
+          <div class="legend"><span><i style="background:#9e9e9e"></i>V<sub>OUT</sub>, datasheet thresholds</span><span><i style="background:#00913a;height:4px"></i>V<sub>OUT</sub>, Phase Tuner</span><span><i style="background:#c62828"></i>Window (load line &minus; 25 mV)</span></div>
+          <svg id="chScope" viewBox="0 0 520 290"></svg></div>
+        <div class="chart"><div class="hd"><h4>Trace replay</h4></div>
+          <p class="cap" id="tlCap"></p>
+          <div class="legend"><span><i style="background:#d6d6d6;height:8px"></i>Load current</span><span><i style="background:#9e9e9e"></i>Active phases, datasheet</span><span><i style="background:#00913a;height:4px"></i>Active phases, Phase Tuner</span><span><i class="dot" style="background:#c62828"></i>Out-of-spec step</span></div>
+          <svg id="chTl" viewBox="0 0 520 290"></svg></div>
+      </div>
+    </div>
+  </div>
+
+  <h3>Recommended phase floors</h3>
+  <p class="note" style="margin-top:0">Program as the minimum active-phase count for each load band (PMBus/MTP). Rows where the floor sits above the datasheet count are where shedding was unsafe for this workload.</p>
+  <table class="order" id="tbl"></table>
+  <p class="note" id="method"></p>
+</section>
+
+<section class="card">
+  <h2>Features</h2>
+  <h3>High-Performance Multiphase Control</h3>
+  <ul class="feat">
+    <li>The RS17G22 is a Dual-rail PWMVID/AVSBus controller supporting up to <b>16 total phases</b> (16+0 to 8+8)</li>
+    <li>Native <b>Trans-Inductor Voltage Regulator (TLVR)</b> support</li>
+    <li>Constant On-Time (COT) control for fast transient response</li>
+    <li>Automatic phase add/drop for improved light-load efficiency</li>
+  </ul>
+  <h3>Advanced Control &amp; Optimization</h3>
+  <ul class="feat">
+    <li>Programmable DC load-line</li>
+    <li>Programmable overshoot and undershoot reduction</li>
+    <li>Field-programmable Multiple-Time Programmability (MTP)</li>
+  </ul>
+</section>
+</main>
+<div class="foot">Unofficial concept demo by Mohith Gajjela. Not affiliated with Reed Semiconductor. Synthetic data; rail values are assumptions, not RS17G22 or RS86900 specifications.</div>
+
+<script src="src/phasetuner.js"></script>
+<script src="data/traces.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
