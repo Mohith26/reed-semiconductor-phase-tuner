@@ -55,6 +55,15 @@
         </div>
         <p class="note" id="dataNote"></p>
       </div>
+      <div class="panel steps">
+        <h4>How the floor is set</h4>
+        <ol>
+          <li><b>Score every step.</b> Each rising edge in the calibration traces is simulated with 1 to 16 phases already on to find the fewest that keep V<sub>OUT</sub> inside the window.</li>
+          <li><b>Calibrate per load band.</b> The floor is a split-conformal upper quantile of those counts, so a new step in the band needs more with probability at most &alpha;.</li>
+          <li><b>Replay held-out traces.</b> The full add/drop logic (drop delay, hysteresis, undershoot reduction) runs on traces the floor never saw.</li>
+          <li><b>Program it.</b> One minimum-phase value per load band, written once to MTP next to the existing add/drop thresholds.</li>
+        </ol>
+      </div>
     </div>
     <div>
       <div class="kpis" id="kpis"></div>
