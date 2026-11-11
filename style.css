@@ -96,10 +96,10 @@ svg text { font-family: "Roboto Flex", sans-serif; }
 .ax line, .ax path { stroke: #e3e3e3; }
 .axt { font-size: 11.5px; fill: #555; }
 
-table.order { width: 100%; border-collapse: collapse; margin-top: 6px; font-size: 14.5px; }
-table.order th { background: var(--green); color: #fff; font-weight: 400; height: 48px; padding: 0 10px; border-right: 1px solid rgba(255,255,255,.28); text-align: center; }
-table.order td { height: 44px; text-align: center; border: 1px solid var(--line); padding: 0 10px; }
-table.order td:first-child { font-weight: 600; color: var(--ink); }
+table.order { width: 100%; border-collapse: collapse; margin-top: 6px; font-size: 16px; }
+table.order th { background: var(--green); color: #fff; font-weight: 400; height: 52px; padding: 0 10px; border-right: 1px solid rgba(255,255,255,.28); text-align: center; }
+table.order td { height: 52px; text-align: center; border: 1px solid var(--line); padding: 0 10px; }
+table.order td:first-child { font-weight: 500; color: var(--green); }
 table.order td.fl { color: var(--green-head); font-weight: 600; }
 table.order tr.bind td { background: #f6fbf6; }
 
