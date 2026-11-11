@@ -6,6 +6,9 @@
   const r = PT.rail();
   const ALPHAS = [0.02, 0.01, 0.005, 0.002];
   const S = { alpha: 0.005, cache: {}, sweep: null, traceIdx: null };
+  // deep links: ?alpha=0.01&trace=4 (same code path as the controls)
+  const Q = new URLSearchParams(location.search);
+  if (ALPHAS.includes(+Q.get('alpha'))) S.alpha = +Q.get('alpha');
   const $ = (id) => document.getElementById(id);
   const tick = () => new Promise((res) => setTimeout(res, 0));
   const fmt = (x, d) => x.toLocaleString('en-US', { minimumFractionDigits: d || 0, maximumFractionDigits: d || 0 });
@@ -270,11 +273,13 @@
   async function update() {
     const C = await forAlpha(S.alpha);
     renderKpis(C); renderFloor(C); renderScope(C); renderTable(C);
+    if (S.traceIdx == null && Q.get('trace') != null && sp.test[+Q.get('trace')]) S.traceIdx = +Q.get('trace');
     if (S.traceIdx == null) {
       const w = S.ds.worst;
       S.traceIdx = sp.test.findIndex((t) => t.profile === w.profile && t.seed === w.seed);
       $('traceSel').value = String(S.traceIdx);
     }
+    $('traceSel').value = String(S.traceIdx);
     renderTimeline();
     renderFront();
   }
